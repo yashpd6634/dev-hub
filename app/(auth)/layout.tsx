@@ -1,5 +1,5 @@
 import React from "react";
-import { Logo } from "./_component/logo";
+import { Logo } from "../(browse)/_components/navbar/logo";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
