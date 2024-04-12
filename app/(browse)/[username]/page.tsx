@@ -2,6 +2,7 @@ import { isFollowingUser } from "@/lib/follow-service";
 import { getUserByUsername } from "@/lib/user-service";
 import { notFound } from "next/navigation";
 import React from "react";
+import Actions from "./_components/actions";
 
 interface UserPageProps {
   params: {
@@ -23,6 +24,7 @@ const UserPage = async ({ params }: UserPageProps) => {
       <p>username: {user.username}</p>
       <p>UserId: {user.id}</p>
       <p>isFollowing: {`${isFollowing}`}</p>
+      <Actions userId={user.id} isFollowing={isFollowing} />
     </div>
   );
 };
