@@ -45,7 +45,7 @@ model Stream {
 
   isLive              Boolean @default(false)
   isChatEnabled       Boolean @default(true)
-  isChatDisabled      Boolean @default(false)
+  isChatDelayed       Boolean @default(false)
   isChatFollowersOnly Boolean @default(false)
 
   userId String @unique
