@@ -1,14 +1,6 @@
 import { db } from "@/lib/db";
 import { Stream } from "@prisma/client";
 
-interface updatedStreamValidDataProps {
-    name: string | undefined;
-    isChatEnabled: boolean | undefined;
-    isChatDelayed: boolean | undefined;
-    isChatFollowersOnly: boolean | undefined;
-  }
-  
-
 export const getStreamByUserId = async (userId: string) => {
   const stream = await db.stream.findUnique({
     where: {
@@ -19,7 +11,7 @@ export const getStreamByUserId = async (userId: string) => {
   return stream;
 };
 
-export const updateStreamById = async (id: string, validData: updatedStreamValidDataProps) => {
+export const updateStreamById = async (id: string, validData: Partial<Stream>) => {
   const updatedStream = await db.stream.update({
     where: {
       id,

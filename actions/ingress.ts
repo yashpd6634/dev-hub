@@ -2,6 +2,7 @@
 
 import { getSelf } from "@/lib/auth-service";
 import { db } from "@/lib/db";
+import { getStreamByUserId, updateStreamById } from "@/lib/stream-service";
 import {
   CreateIngressOptions,
   IngressAudioEncodingPreset,
@@ -43,6 +44,11 @@ export const resetIngresses = async (hostIdentity: string) => {
 
 export const createIngress = async (ingressType: IngressInput) => {
   const self = await getSelf();
+  const selfStream = await getStreamByUserId(self.id);
+
+  if (!selfStream) {
+    throw new Error("Stream not found");
+  }
 
   await resetIngresses(self.id);
 
@@ -78,14 +84,13 @@ export const createIngress = async (ingressType: IngressInput) => {
     throw new Error("Failed to create ingress");
   }
 
-  await db.stream.update({
-    where: { userId: self.id },
-    data: {
-      ingressId: ingress.ingressId,
-      serverUrl: ingress.url,
-      streamKey: ingress.streamKey,
-    },
-  });
+  const validData = {
+    ingressId: ingress.ingressId,
+    serverUrl: ingress.url,
+    streamKey: ingress.streamKey,
+  };
+
+  await updateStreamById(selfStream.id, validData);
 
   revalidatePath(`/u/${self.username}/keys`);
 
