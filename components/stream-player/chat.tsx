@@ -10,7 +10,7 @@ interface ChatProps {
   isChatFollowersOnly: boolean;
 }
 
-import { useChatSidebar } from "@/store/use-chat-sidebar";
+import { ChatVariant, useChatSidebar } from "@/store/use-chat-sidebar";
 import {
   useChat,
   useConnectionState,
@@ -20,6 +20,8 @@ import { ConnectionState } from "livekit-client";
 import React, { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import ChatHeader from "@/components/stream-player/chat-header";
+import ChatForm from "./chat-form";
+import ChatList from "./chat-list";
 
 const Chat = ({
   hostName,
@@ -66,6 +68,25 @@ const Chat = ({
   return (
     <div className="flex flex-col bg-background border-l border-b pt-0 h-[calc(100vh-80px)]">
       <ChatHeader />
+      {variant === ChatVariant.CHAT && (
+        <>
+          <ChatList isHidden={isHidden} messages={reversedMessages} />
+          <ChatForm
+            onSubmit={onSubmit}
+            onChange={onChange}
+            value={value}
+            isHidden={isHidden}
+            isFollowersOnly={isChatFollowersOnly}
+            isDelayed={isChatDelayed}
+            isFollowing={isFollowing}
+          />
+        </>
+      )}
+      {variant === ChatVariant.COMMUNITY && (
+        <>
+          <p>Community Mode</p>
+        </>
+      )}
     </div>
   );
 };
