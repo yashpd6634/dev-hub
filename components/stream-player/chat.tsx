@@ -19,9 +19,12 @@ import {
 import { ConnectionState } from "livekit-client";
 import React, { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import ChatHeader from "@/components/stream-player/chat-header";
-import ChatForm from "./chat-form";
-import ChatList from "./chat-list";
+import ChatHeader, {
+  ChatHeaderSkeleton,
+} from "@/components/stream-player/chat-header";
+import ChatForm, { ChatFormSkeleton } from "./chat-form";
+import ChatList, { ChatListSkeleton } from "./chat-list";
+import ChatCommunity from "./chat-community";
 
 const Chat = ({
   hostName,
@@ -84,7 +87,11 @@ const Chat = ({
       )}
       {variant === ChatVariant.COMMUNITY && (
         <>
-          <p>Community Mode</p>
+          <ChatCommunity
+            hostName={hostName}
+            viewerName={viewerName}
+            isHidden={isHidden}
+          />
         </>
       )}
     </div>
@@ -92,3 +99,13 @@ const Chat = ({
 };
 
 export default Chat;
+
+export const ChatSkeleton = () => {
+  return (
+    <div className="flex flex-col border-l border-b pt-0 h-calc[(100vh-80px)]">
+      <ChatHeaderSkeleton />
+      <ChatListSkeleton />
+      <ChatFormSkeleton />
+    </div>
+  );
+};
