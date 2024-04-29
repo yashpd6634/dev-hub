@@ -53,6 +53,7 @@ const Navigation = () => {
     <ul className="space-y-2 px-2 pt-4 lg:pt-0">
       {routes.map((route) => (
         <NavItem
+          key={route.href}
           icon={route.icon}
           label={route.label}
           href={route.href}
