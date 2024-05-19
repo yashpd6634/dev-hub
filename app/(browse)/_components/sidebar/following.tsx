@@ -30,7 +30,7 @@ const Following = ({ data }: FollowingProps) => {
           <UserItem
             key={follow.following.id}
             username={follow.following.username}
-            imageUrl={follow.following.imageUrl}
+            imageUrl={follow.following.image || ""}
             isLive={follow.following.stream?.isLive}
           />
         ))}

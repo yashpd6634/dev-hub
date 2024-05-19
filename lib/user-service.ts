@@ -7,10 +7,9 @@ export const getUserByUsername = async (username: string) => {
     },
     select: {
       id: true,
-      externalUserId: true,
       username: true,
       bio: true,
-      imageUrl: true,
+      image: true,
       stream: {
         select: {
           id: true,
@@ -44,4 +43,21 @@ export const getUserById = async (id: string) => {
   });
 
   return user;
+};
+
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+      include: {
+        stream: true,
+      },
+    });
+
+    return user;
+  } catch {
+    return null;
+  }
 };

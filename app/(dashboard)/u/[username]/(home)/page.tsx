@@ -1,6 +1,7 @@
+import { currentUser } from "@/actions/user";
 import { StreamPlayer } from "@/components/stream-player";
 import { getUserByUsername } from "@/lib/user-service";
-import { currentUser } from "@clerk/nextjs";
+import { Fallback } from "@radix-ui/react-avatar";
 import React from "react";
 
 interface CreaterPageProps {
@@ -11,9 +12,9 @@ interface CreaterPageProps {
 
 const CreaterPage = async ({ params }: CreaterPageProps) => {
   const externalUser = await currentUser();
-  const user = await getUserByUsername(params.username);
+  const user = await getUserByUsername(decodeURIComponent(params.username));
 
-  if (!user || user.externalUserId !== externalUser?.id || !user.stream) {
+  if (!user || user.id !== externalUser?.id || !user.stream) {
     throw new Error("Unauthorized");
   }
   return (

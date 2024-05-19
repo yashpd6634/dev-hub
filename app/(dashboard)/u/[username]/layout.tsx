@@ -12,7 +12,7 @@ interface CreaterLayoutProps {
 }
 
 const CreaterLayout = async ({ params, children }: CreaterLayoutProps) => {
-  const self = await getSelfByUsername(params.username);
+  const self = await getSelfByUsername(decodeURIComponent(params.username));
 
   if (!self) {
     redirect("/");

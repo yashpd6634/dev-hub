@@ -19,12 +19,12 @@ interface ResultCardProps {
 
 const ResultCard = ({ data }: ResultCardProps) => {
   return (
-    <Link href={`/${data.user.username}`}>
+    <Link href={`/${encodeURIComponent(data.user.username)}`}>
       <div className="w-full flex gap-x-4">
         <div className="relative h-[9rem] w-[16rem]">
           <Thumbnail
             src={data.thumbnailUrl}
-            fallback={data.user.imageUrl}
+            fallback={data.user.image || ""}
             isLive={data.isLive}
             username={data.user.username}
           />

@@ -1,7 +1,6 @@
 "use server";
 
 import { getSelf } from "@/lib/auth-service";
-import { db } from "@/lib/db";
 import { getStreamByUserId, updateStreamById } from "@/lib/stream-service";
 import {
   CreateIngressOptions,

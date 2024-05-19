@@ -26,7 +26,7 @@ const Recommended = ({ data }: RecommendedProps) => {
           <UserItem
             key={user.id}
             username={user.username}
-            imageUrl={user.imageUrl}
+            imageUrl={user.image || ""}
             isLive={user.stream?.isLive}
           />
         ))}

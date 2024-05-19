@@ -16,11 +16,15 @@ datasource db {
 }
 
 model User {
-  id             String  @id @default(uuid())
-  username       String  @unique
-  imageUrl       String  @db.Text
-  externalUserId String  @unique
-  bio            String? @db.Text
+  id            String    @id @default(cuid())
+  name          String
+  username      String    @unique
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  password      String?
+  image         String?   @db.Text
+  bio           String?   @db.Text
+  accounts      Account[]
 
   following  Follow[] @relation("Following")
   followedBy Follow[] @relation("FollowedBy")
@@ -34,8 +38,48 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@index([providerAccountId])
+  @@map("accounts")
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
 model Stream {
-  id           String  @id @default(uuid())
+  id           String  @id @default(cuid())
   name         String  @db.Text
   thumbnailUrl String? @db.Text
 
@@ -60,7 +104,7 @@ model Stream {
 }
 
 model Follow {
-  id          String @id @default(uuid())
+  id          String @id @default(cuid())
   followingId String
   followerId  String
 
@@ -76,7 +120,7 @@ model Follow {
 }
 
 model Block {
-  id        String @id @default(uuid())
+  id        String @id @default(cuid())
   blockerId String
   blockedId String
 

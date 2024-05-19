@@ -1,5 +1,5 @@
+import UserButton from "@/components/auth/user-button";
 import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -18,7 +18,7 @@ const Actions = () => {
           Exit
         </Link>
       </Button>
-      <UserButton afterSignOutUrl="/" />
+      <UserButton />
     </div>
   );
 };

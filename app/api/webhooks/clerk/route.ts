@@ -61,8 +61,9 @@ export async function POST(req: Request) {
     await db.user.create({
       data: {
         username: payload.data.username,
-        imageUrl: payload.data.image_url,
-        externalUserId: payload.data.id,
+        image: payload.data.image_url,
+        email: payload.data.email,
+        name: payload.data.name,
         stream: {
           create: {
             name: `${payload.data.username}'s stream`,
@@ -85,11 +86,11 @@ export async function POST(req: Request) {
 
     await db.user.update({
       where: {
-        externalUserId: payload.data.id,
+        id: payload.data.id,
       },
       data: {
         username: payload.data.username,
-        imageUrl: payload.data.image_url,
+        image: payload.data.image_url,
       },
     });
   }
@@ -99,7 +100,7 @@ export async function POST(req: Request) {
 
     await db.user.delete({
       where: {
-        externalUserId: payload.data.id,
+        id: payload.data.id,
       },
     });
   }

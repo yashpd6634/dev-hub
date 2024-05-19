@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import {
   Fullscreen,
   KeyRound,
@@ -11,30 +10,34 @@ import {
 import { usePathname } from "next/navigation";
 import React from "react";
 import NavItem, { NavItemSkeleton } from "./nav-item";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const Navigation = () => {
   const pathname = usePathname();
-  const { user } = useUser();
+  const user = useCurrentUser();
+
+  if (!user) throw new Error("User is not available");
+  if (!user.username) throw new Error("Username is not given");
 
   const routes = [
     {
       label: "Stream",
-      href: `/u/${user?.username}`,
+      href: `/u/${encodeURIComponent(user?.username)}`,
       icon: Fullscreen,
     },
     {
       label: "Keys",
-      href: `/u/${user?.username}/keys`,
+      href: `/u/${encodeURIComponent(user?.username)}/keys`,
       icon: KeyRound,
     },
     {
       label: "Chat",
-      href: `/u/${user?.username}/chat`,
+      href: `/u/${encodeURIComponent(user?.username)}/chat`,
       icon: MessageSquare,
     },
     {
       label: "Community",
-      href: `/u/${user?.username}/community`,
+      href: `/u/${encodeURIComponent(user?.username)}/community`,
       icon: Users,
     },
   ];

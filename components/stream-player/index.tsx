@@ -27,7 +27,7 @@ type CustomUser = {
   username: string;
   bio: string | null;
   stream: CustomStream | null;
-  imageUrl: string;
+  image: string | null;
   _count: { followedBy: number };
 };
 
@@ -71,7 +71,7 @@ export const StreamPlayer = ({
             hostName={user.username}
             hostIdentity={user.id}
             viewerIdentity={identity}
-            imageUrl={user.imageUrl}
+            imageUrl={user.image!}
             isFollowing={isFollowing}
             name={stream.name}
           />
