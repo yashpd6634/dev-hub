@@ -5,7 +5,7 @@ import LoginForm from "@/components/auth/login-form";
 //   return <SignIn />;
 // }
 
-export const SignInPage = () => {
+const SignInPage = () => {
   return (
     <div>
       <LoginForm />
