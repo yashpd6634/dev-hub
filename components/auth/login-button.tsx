@@ -17,6 +17,7 @@ const LoginButton = ({
   const router = useRouter();
 
   const onClick = () => {
+    router.refresh();
     router.push("/sign-in");
   };
 
