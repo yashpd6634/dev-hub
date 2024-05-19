@@ -11,7 +11,10 @@ import { NextResponse } from "next/server";
 const { auth } = NextAuth(authConfig);
 
 function validateUsername(username: string) {
-  return !publicRoutes.includes(`/${username}`);
+  return (
+    !publicRoutes.includes(`/${username}`) &&
+    !authRoutes.includes(`/${username}`)
+  );
 }
 
 export default auth((req, ctx) => {
