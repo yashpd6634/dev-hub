@@ -22,7 +22,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 const CreateUsername = () => {
-  const { data } = useSession();
+  const { data: session } = useSession();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -33,7 +33,7 @@ const CreateUsername = () => {
   const form = useForm<z.infer<typeof UsernameSchema>>({
     resolver: zodResolver(UsernameSchema),
     defaultValues: {
-      username: data?.user.username || "",
+      username: session?.user.username || "",
     },
   });
 
@@ -45,6 +45,9 @@ const CreateUsername = () => {
       createUsername(values.username).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
+        if (data?.success) {
+          session!.user.username = values.username;
+        }
       });
       redirect(callbackUrl!);
     });
