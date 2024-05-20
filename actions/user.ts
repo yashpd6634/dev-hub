@@ -54,6 +54,12 @@ export const createUsername = async (username: string) => {
       },
     });
 
+    revalidatePath(`/${user.username}`);
+    revalidatePath(`/u/${user.username}`);
+    revalidatePath(`/u/${user.username}/keys`);
+    revalidatePath(`/u/${user.username}/community`);
+    revalidatePath(`/u/${user.username}/chat`);
+
     return { success: "Username is updated" };
   } catch {
     return { error: "Internal Error" };
