@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import Results, { ResultsSkeleton } from "./_components/results";
 import { Suspense } from "react";
 import { db } from "@/lib/db";
