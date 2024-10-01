@@ -1,4 +1,5 @@
 "use client";
+import Hint from "@/components/hint";
 import LiveBadge from "@/components/live-badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,28 +25,34 @@ const UserItem = ({ username, imageUrl, isLive }: UserItemProps) => {
   const isActive = href === pathname;
 
   return (
-    <Button
-      asChild
-      variant="ghost"
-      className={cn(
-        "w-full h-12",
-        collapsed ? "justify-center" : "justify-start",
-        isActive && "bg-accent"
-      )}
-    >
-      <Link href={href}>
-        <div
-          className={cn(
-            "flex items-center w-full gap-x-4",
-            collapsed && "justify-center"
-          )}
-        >
-          <UserAvatar username={username} imageUrl={imageUrl} isLive={isLive} />
-          {!collapsed && <p className="truncate">{username}</p>}
-          {!collapsed && isLive && <LiveBadge className="ml-auto" />}
-        </div>
-      </Link>
-    </Button>
+    <Hint side="right" align="center" label={username} asChild>
+      <Button
+        asChild
+        variant="ghost"
+        className={cn(
+          "w-full h-12",
+          collapsed ? "justify-center" : "justify-start",
+          isActive && "bg-accent"
+        )}
+      >
+        <Link href={href}>
+          <div
+            className={cn(
+              "flex items-center w-full gap-x-4",
+              collapsed && "justify-center"
+            )}
+          >
+            <UserAvatar
+              username={username}
+              imageUrl={imageUrl}
+              isLive={isLive}
+            />
+            {!collapsed && <p className="truncate">{username}</p>}
+            {!collapsed && isLive && <LiveBadge className="ml-auto" />}
+          </div>
+        </Link>
+      </Button>
+    </Hint>
   );
 };
 

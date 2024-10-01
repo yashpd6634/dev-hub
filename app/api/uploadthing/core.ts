@@ -5,6 +5,25 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 const f = createUploadthing();
 
 export const ourFileRouter = {
+  serverImage: f({
+    image: {
+      maxFileSize: "4MB",
+      maxFileCount: 1,
+    },
+  })
+    .middleware(async () => {
+      const self = await getSelf();
+
+      return { user: self };
+    })
+    .onUploadComplete(() => {}),
+  messageFile: f(["image", "pdf"])
+    .middleware(async () => {
+      const self = await getSelf();
+
+      return { user: self };
+    })
+    .onUploadComplete(async () => ({})),
   thumbnailUploader: f({
     image: {
       maxFileSize: "4MB",
