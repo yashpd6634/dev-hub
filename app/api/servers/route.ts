@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return new NextResponse("server created", { status: 200 });
+    return NextResponse.json(server);
   } catch (error) {
     console.log("[SERVER_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
