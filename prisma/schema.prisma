@@ -139,7 +139,7 @@ model Server {
   id         String @id @default(uuid())
   name       String
   imageUrl   String @db.Text()
-  inviteCode String @db.Text()
+  inviteCode String @unique
 
   profileId String
   user      User   @relation(fields: [profileId], references: [id], onDelete: Cascade)

@@ -6,6 +6,16 @@ import { currentUser } from "@/actions/user";
 
 export default async function Home() {
   const user = await currentUser();
+  if (!user) {
+    return (
+      <div className="h-full p-8 mx-auto max-w-screen-2xl">
+        <Suspense fallback={<ResultsSkeleton />}>
+          <Results />
+        </Suspense>
+      </div>
+    );
+  }
+
   const server = await db.server.findFirst({
     where: {
       members: {
@@ -15,6 +25,9 @@ export default async function Home() {
       },
     },
   });
+
+  console.log(user);
+  console.log(server);
 
   if (!server) return <InitialModal />;
 
