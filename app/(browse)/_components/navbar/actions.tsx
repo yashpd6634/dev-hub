@@ -26,12 +26,12 @@ const Actions = async () => {
             className="text-muted-foreground hover:text-primary"
             asChild
           >
-            <Link href={`u/${encodeURIComponent(user.username)}`}>
+            <Link href={`/u/${encodeURIComponent(user.username)}`}>
               <Clapperboard />
               <span className="hidden lg:block">Dashboard</span>
             </Link>
           </Button>
-          <UserButton/>
+          <UserButton />
         </div>
       )}
     </div>

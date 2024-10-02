@@ -25,9 +25,10 @@ export const RegisterSchema = z.object({
 });
 
 export const UsernameSchema = z.object({
-  username: z.string().min(4, {
-    message: "Should atleast contain 4 characters",
-  }),
+  username: z
+    .string()
+    .min(4, { message: "Should contain at least 4 characters" })
+    .regex(/^\S*$/, { message: "Username should not contain spaces" }),
 });
 
 export const ResetSchema = z.object({
