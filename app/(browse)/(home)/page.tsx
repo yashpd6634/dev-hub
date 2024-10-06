@@ -1,8 +1,8 @@
 import Results, { ResultsSkeleton } from "./_components/results";
 import { Suspense } from "react";
-import { db } from "@/lib/db";
 import InitialModal from "@/components/server/modals/initial-modal";
 import { currentUser } from "@/actions/user";
+import { getFirstServer } from "@/lib/server-service";
 
 export default async function Home() {
   const user = await currentUser();
@@ -16,15 +16,7 @@ export default async function Home() {
     );
   }
 
-  const server = await db.server.findFirst({
-    where: {
-      members: {
-        some: {
-          userId: user?.id,
-        },
-      },
-    },
-  });
+  const server = await getFirstServer();
 
   console.log(user);
   console.log(server);

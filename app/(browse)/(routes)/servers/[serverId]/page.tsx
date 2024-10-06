@@ -1,7 +1,6 @@
 import { currentUser } from "@/actions/user";
-import { db } from "@/lib/db";
+import { getGeneralServer } from "@/lib/server-service";
 import { redirect } from "next/navigation";
-import React from "react";
 
 type ServerIdPageProps = {
   params: {
@@ -16,26 +15,7 @@ const ServerIdPage = async ({ params }: ServerIdPageProps) => {
     return redirect("/sign-in");
   }
 
-  const server = await db.server.findUnique({
-    where: {
-      id: params.serverId,
-      members: {
-        some: {
-          userId: profile.id,
-        },
-      },
-    },
-    include: {
-      channels: {
-        where: {
-          name: "general",
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-    },
-  });
+  const server = await getGeneralServer(params.serverId);
 
   const initialChannel = server?.channels[0];
 

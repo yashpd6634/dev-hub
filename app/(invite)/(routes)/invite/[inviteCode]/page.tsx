@@ -1,7 +1,9 @@
 import { currentUser } from "@/actions/user";
-import { db } from "@/lib/db";
+import {
+  addUserToInvitedServer,
+  checkIfUserBelongsToInvitedServer,
+} from "@/lib/server-service";
 import { redirect } from "next/navigation";
-import React from "react";
 
 type InviteCodePageProps = {
   params: {
@@ -20,35 +22,15 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     return redirect("/");
   }
 
-  const existingServer = await db.server.findFirst({
-    where: {
-      inviteCode: params.inviteCode,
-      members: {
-        some: {
-          userId: profile.id,
-        },
-      },
-    },
-  });
+  const existingServer = await checkIfUserBelongsToInvitedServer(
+    params.inviteCode
+  );
 
   if (existingServer) {
     return redirect(`/servers/${existingServer.id}`);
   }
 
-  const server = await db.server.update({
-    where: {
-      inviteCode: params.inviteCode,
-    },
-    data: {
-      members: {
-        create: [
-          {
-            userId: profile.id,
-          },
-        ],
-      },
-    },
-  });
+  const server = await addUserToInvitedServer(params.inviteCode);
 
   if (server) {
     return redirect(`/servers/${server.id}`);

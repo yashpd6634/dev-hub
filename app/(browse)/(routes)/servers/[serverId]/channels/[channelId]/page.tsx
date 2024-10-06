@@ -1,11 +1,24 @@
-import React from 'react'
+import { currentUser } from "@/actions/user";
+import { redirect } from "next/navigation";
+import React from "react";
 
-type Props = {}
+type ChannelIdPageProps = {
+  params: {
+    channelId: string;
+    serverId: string;
+  };
+};
 
-const ChannelIdPage = (props: Props) => {
-  return (
-    <div>ChannelIdPage</div>
-  )
-}
+const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
+  const profile = await currentUser();
 
-export default ChannelIdPage
+  if (!profile) {
+    return redirect("/sign-in");
+  }
+
+  
+
+  return <div>ChannelIdPage</div>;
+};
+
+export default ChannelIdPage;
