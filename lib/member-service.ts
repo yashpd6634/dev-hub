@@ -17,3 +17,23 @@ export const getFirstMember = async (serverId: string) => {
     console.log(error, "Something wrong with this server or member list");
   }
 };
+
+export const getFirstMemberWithProfile = async (serverId: string) => {
+  try {
+    const self = await getSelf();
+
+    const member = await db.member.findFirst({
+      where: {
+        serverId: serverId,
+        userId: self.id,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    return member;
+  } catch (error) {
+    console.log(error, "Something wrong with this server or member list");
+  }
+};
