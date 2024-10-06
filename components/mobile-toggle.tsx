@@ -16,7 +16,10 @@ const MobileToggle = ({ serverId }: MobileToggleProps) => {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="mt-20 ml-[70px] p-0 w-50 flex gap-0 z-40">
+      <SheetContent
+        side="left"
+        className="mt-20 ml-[70px] p-0 w-50 flex gap-0 z-40"
+      >
         <ServerSidebar serverId={serverId} />
       </SheetContent>
     </Sheet>
