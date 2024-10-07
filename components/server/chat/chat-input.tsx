@@ -11,6 +11,7 @@ import { useModal } from "@/store/use-modal-store";
 import EmojiPicker from "./emoji-picker";
 import qs from "query-string";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type ChatInputProps = {
   apiUrl: string;
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
   const { onOpen } = useModal();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
