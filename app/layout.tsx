@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Component } from "react";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { SocketProvider } from "@/components/providers/socket-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,8 +33,10 @@ export default async function RootLayout({
             storageKey="devhub-theme"
           >
             <Toaster theme="light" position="bottom-center" />
-            <ModalProvider />
-            {children}
+            <SocketProvider>
+              <ModalProvider />
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
