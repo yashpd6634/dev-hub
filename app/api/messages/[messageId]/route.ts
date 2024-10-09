@@ -81,7 +81,7 @@ export async function DELETE(
       },
     });
 
-    if (!member || message?.deleted) {
+    if (!message || message?.deleted) {
       return new NextResponse("Message not found", { status: 404 });
     }
 
@@ -199,7 +199,7 @@ export async function PATCH(
       },
     });
 
-    if (!member || message?.deleted) {
+    if (!message || message?.deleted) {
       return new NextResponse("Message not found", { status: 404 });
     }
 
