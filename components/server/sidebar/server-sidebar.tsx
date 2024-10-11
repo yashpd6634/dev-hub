@@ -6,7 +6,14 @@ import React from "react";
 import ServerHeader from "./server-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ServerSearch from "./server-search";
-import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
+import {
+  Hash,
+  LayoutDashboard,
+  Mic,
+  ShieldAlert,
+  ShieldCheck,
+  Video,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import ServerSection from "./server-section";
 import { channel } from "diagnostics_channel";
@@ -21,6 +28,7 @@ const iconMap = {
   [ChannelType.TEXT]: <Hash className="mr-2 w-4 h-4" />,
   [ChannelType.AUDIO]: <Mic className="mr-2 w-4 h-4" />,
   [ChannelType.VIDEO]: <Video className="mr-2 w-4 h-4" />,
+  [ChannelType.BOARD]: <LayoutDashboard className="mr-2 w-4 h-4" />,
 };
 
 const roleMap = {
@@ -42,6 +50,9 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
 
   const textChannels = server?.channels.filter(
     (channel) => channel.type === ChannelType.TEXT
+  );
+  const boardChannels = server?.channels.filter(
+    (channel) => channel.type === ChannelType.BOARD
   );
   const audioChannels = server?.channels.filter(
     (channel) => channel.type === ChannelType.AUDIO
@@ -96,6 +107,15 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 })),
               },
               {
+                label: "Board Channels",
+                type: "channel",
+                data: boardChannels?.map((channel) => ({
+                  id: channel.id,
+                  name: channel.name,
+                  icon: iconMap[channel.type],
+                })),
+              },
+              {
                 label: "Members",
                 type: "member",
                 data: members?.map((member) => ({
@@ -118,6 +138,26 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             />
             <div className="space-y-[2px]">
               {textChannels.map((channel) => (
+                <ServerChannel
+                  key={channel.id}
+                  channel={channel}
+                  role={role}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {!!boardChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={ChannelType.BOARD}
+              role={role}
+              label="Board Channels"
+            />
+            <div className="space-y-[2px]">
+              {boardChannels.map((channel) => (
                 <ServerChannel
                   key={channel.id}
                   channel={channel}

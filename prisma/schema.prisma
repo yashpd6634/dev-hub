@@ -186,6 +186,7 @@ enum ChannelType {
   TEXT
   AUDIO
   VIDEO
+  BOARD
 }
 
 model Channel {

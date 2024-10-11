@@ -51,9 +51,6 @@ export const ServerItem = ({ id, imageUrl, name }: ServerItemProps) => {
   const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
 
-  console.log(params);
-  console.log(collapsed);
-
   const onClick = () => {
     router.push(`/servers/${id}`);
   };

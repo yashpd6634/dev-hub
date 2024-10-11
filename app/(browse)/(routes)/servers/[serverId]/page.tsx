@@ -1,5 +1,5 @@
 import { currentUser } from "@/actions/user";
-import { getGeneralServer } from "@/lib/server-service";
+import { getGeneralChannel } from "@/lib/server-service";
 import { redirect } from "next/navigation";
 
 type ServerIdPageProps = {
@@ -15,7 +15,7 @@ const ServerIdPage = async ({ params }: ServerIdPageProps) => {
     return redirect("/sign-in");
   }
 
-  const server = await getGeneralServer(params.serverId);
+  const server = await getGeneralChannel(params.serverId);
 
   const initialChannel = server?.channels[0];
 

@@ -84,20 +84,19 @@ const EditChannelModal = (props: Props) => {
       await axios.patch(url, values);
 
       form.reset();
-      router.refresh();
+      if (channel?.type === ChannelType.BOARD) {
+        window.location.reload();
+      } else {
+        router.refresh();
+      }
       onClose();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleClose = () => {
-    form.reset();
-    onClose();
-  };
-
   return (
-    <Dialog open={isModalOpen} onOpenChange={handleClose}>
+    <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
@@ -134,7 +133,7 @@ const EditChannelModal = (props: Props) => {
                   <FormItem>
                     <FormLabel>Channel Type</FormLabel>
                     <Select
-                      disabled={isLoading}
+                      disabled
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >

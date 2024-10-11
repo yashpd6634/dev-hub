@@ -18,9 +18,6 @@ export default async function Home() {
 
   const server = await getFirstServer();
 
-  console.log(user);
-  console.log(server);
-
   if (!server) return <InitialModal />;
 
   return (

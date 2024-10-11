@@ -1,5 +1,8 @@
 import { currentUser } from "@/actions/user";
 import MediaRoom from "@/components/media-room";
+import Canvas from "@/components/server/board/canvas";
+import Loading from "@/components/server/board/loading";
+import { Room } from "@/components/server/board/room";
 import ChatHeader from "@/components/server/chat/chat-header";
 import ChatInput from "@/components/server/chat/chat-input";
 import ChatMessages from "@/components/server/chat/chat-messages";
@@ -32,11 +35,13 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
 
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-      <ChatHeader
-        name={channel.name}
-        serverId={channel.serverId}
-        type="channel"
-      />
+      {channel.type !== ChannelType.BOARD && (
+        <ChatHeader
+          name={channel.name}
+          serverId={channel.serverId}
+          type="channel"
+        />
+      )}
       {channel.type === ChannelType.TEXT && (
         <>
           <ChatMessages
@@ -69,6 +74,11 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
       )}
       {channel.type === ChannelType.VIDEO && (
         <MediaRoom chatId={channel.id} video={true} audio={false} />
+      )}
+      {channel.type === ChannelType.BOARD && (
+        <Room roomId={channel.id} fallback={<Loading />}>
+          <Canvas boardId={channel.id} />
+        </Room>
       )}
     </div>
   );

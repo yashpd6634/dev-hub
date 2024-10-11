@@ -16,8 +16,6 @@ export async function DELETE(
     const serverId = searchParams.get("serverId");
     const channelId = searchParams.get("channelId");
 
-    console.log(searchParams);
-
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }

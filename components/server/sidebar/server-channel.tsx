@@ -3,7 +3,7 @@ import Hint from "@/components/hint";
 import { cn } from "@/lib/utils";
 import { ModalType, useModal } from "@/store/use-modal-store";
 import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
-import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
+import { Edit, Hash, LayoutDashboard, Lock, Mic, Trash, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -17,6 +17,7 @@ const iconMap = {
   [ChannelType.TEXT]: Hash,
   [ChannelType.AUDIO]: Mic,
   [ChannelType.VIDEO]: Video,
+  [ChannelType.BOARD]: LayoutDashboard,
 };
 
 const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {

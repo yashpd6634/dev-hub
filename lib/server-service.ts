@@ -92,7 +92,7 @@ export const getFirstServer = async () => {
   }
 };
 
-export const getGeneralServer = async (serverId: string) => {
+export const getGeneralChannel = async (serverId: string) => {
   try {
     const self = await getSelf();
 

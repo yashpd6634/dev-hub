@@ -15,8 +15,6 @@ export async function DELETE(
 
     const conversationId = searchParams.get("conversationId");
 
-    console.log(searchParams);
-
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
