@@ -38,7 +38,7 @@ const Info = ({ boardId, board }: InfoProps) => {
   }
 
   return (
-    <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
+    <div className="absolute z-10 top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
       <Button variant="board" className="px-2">
         <Image
           src={board.server.imageUrl}
