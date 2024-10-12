@@ -46,14 +46,6 @@ const Info = ({ boardId, board }: InfoProps) => {
           height={40}
           width={40}
         />
-        <span
-          className={cn(
-            "font-semibold text-xl ml-2 text-black",
-            font.className
-          )}
-        >
-          {board.server.name}
-        </span>
       </Button>
       <TabSeparator />
       <Hint label="Edit Board Name" side="bottom">
