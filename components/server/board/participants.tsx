@@ -24,7 +24,7 @@ const Participants = ({ board }: ParticipantsProps) => {
       <div className="flex gap-x-2">
         {users.slice(0, MAX_SHOWN_USERS).map(({ connectionId, info }) => {
           return (
-            <Hint label={info.name} side="bottom">
+            <Hint key={connectionId} label={info.name} side="bottom">
               <UserAvatar
                 key={connectionId}
                 imageUrl={info.avatar}
