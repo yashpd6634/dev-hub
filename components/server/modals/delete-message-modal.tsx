@@ -13,11 +13,13 @@ import { useModal } from "@/store/use-modal-store";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import qs from "query-string";
+import { useSession } from "next-auth/react";
 
 type Props = {};
 
 const DeleteMessageModal = (props: Props) => {
   const { isOpen, onClose, type, data } = useModal();
+  const session = useSession();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,11 +30,15 @@ const DeleteMessageModal = (props: Props) => {
     try {
       setIsLoading(true);
       const url = qs.stringifyUrl({
-        url: apiUrl || "",
+        url: `${process.env.NEXT_PUBLIC_NEST_APP_URL}${apiUrl}`,
         query,
       });
 
-      await axios.delete(url);
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${session.data?.backend_token}`,
+        },
+      });
       onClose();
     } catch (error) {
       console.log(error);

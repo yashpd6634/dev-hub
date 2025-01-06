@@ -65,7 +65,7 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
             apiUrl="/api/direct-messages"
             paramKey="conversationId"
             paramValue={conversation.id}
-            socketUrl="/api/socket/direct-messages"
+            socketUrl="/chats/message"
             socketQuery={{
               conversationId: conversation.id,
             }}
@@ -73,7 +73,7 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
           <ChatInput
             name={otherMember.user.name}
             type="conversation"
-            apiUrl="/api/direct-messages"
+            apiUrl="/chats/message"
             query={{ conversationId: conversation.id }}
           />
         </>

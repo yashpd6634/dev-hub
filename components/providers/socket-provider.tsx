@@ -1,10 +1,11 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { io as ClientIO } from "socket.io-client";
+import { io as ClientIO, Socket } from "socket.io-client";
 
 type SocketContextType = {
-  socket: any | null;
+  socket: Socket | null;
   isConnected: boolean;
 };
 
@@ -18,21 +19,33 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
-    const socketInstance = new (ClientIO as any)(
-      process.env.NEST_PUBLIC_MICROSERVICE_URL!,
+    const socketInstance = ClientIO(
+      `${process.env.NEXT_PUBLIC_NEST_APP_URL}/${process.env.NEXT_PUBLIC_NEST_APP_SOCKET_NAMESPACE}`,
       {
-        path: "/api/socket/io",
-        addTrailingSlash: false,
-      }
+        transports: ["websocket", "polling"],
+        auth: {
+          token: session?.backend_token,
+        },
+        
+      },
     );
+    console.log(socketInstance);
 
     socketInstance.on("connect", () => {
+      console.log(
+        `Connected with socket ID: ${socketInstance.id}. UserID: will join room`
+      );
       setIsConnected(true);
     });
+
+    socketInstance.on("connect_error", (err: any) =>
+      console.error("Connection Error:", err)
+    );
 
     socketInstance.on("disconnect", () => {
       setIsConnected(false);

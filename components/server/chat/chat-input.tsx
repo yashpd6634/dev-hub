@@ -12,6 +12,7 @@ import EmojiPicker from "./emoji-picker";
 import qs from "query-string";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 type ChatInputProps = {
   apiUrl: string;
@@ -27,6 +28,7 @@ const formSchema = z.object({
 const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
   const { onOpen } = useModal();
   const router = useRouter();
+  const session = useSession();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,11 +42,15 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: apiUrl,
+        url: `${process.env.NEXT_PUBLIC_NEST_APP_URL}${apiUrl}`,
         query,
       });
 
-      await axios.post(url, values);
+      await axios.post(url, values, {
+        headers: {
+          Authorization: `Bearer ${session.data?.backend_token}`,
+        },
+      });
       form.reset();
       router.refresh();
     } catch (error) {

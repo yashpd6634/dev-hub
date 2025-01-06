@@ -10,7 +10,6 @@ import { getChannel } from "@/lib/channel-service";
 import { getFirstMember } from "@/lib/member-service";
 import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
-import React from "react";
 
 type ChannelIdPageProps = {
   params: {
@@ -48,7 +47,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
             chatId={channel.id}
             type="channel"
             apiUrl="/api/messages"
-            socketUrl="/api/socket/messages"
+            socketUrl="/chats/message"
             socketQuery={{
               channelId: channel.id,
               serverId: channel.serverId,
@@ -58,7 +57,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
           />
           <ChatInput
             name={channel.name}
-            apiUrl="/api/messages"
+            apiUrl="/chats/message"
             query={{
               channelId: channel.id,
               serverId: channel.serverId,

@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/store/use-modal-store";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 type ChatItemProps = {
   id: string;
@@ -31,7 +32,6 @@ type ChatItemProps = {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  apiUrl: string;
 };
 
 const roleIconMap = {
@@ -55,12 +55,12 @@ const ChatItem = ({
   isUpdated,
   socketQuery,
   socketUrl,
-  apiUrl,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
   const router = useRouter();
   const params = useParams();
+  const session = useSession();
 
   const onMemberClick = () => {
     if (member.id === currentMember.id) {
@@ -96,11 +96,15 @@ const ChatItem = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: `${apiUrl}/${id}`,
+        url: `${process.env.NEXT_PUBLIC_NEST_APP_URL}${socketUrl}/${id}`,
         query: socketQuery,
       });
 
-      await axios.patch(url, values);
+      await axios.patch(url, values, {
+        headers: {
+          Authorization: `Bearer ${session.data?.backend_token}`,
+        },
+      });
 
       form.reset();
       setIsEditing(false);
@@ -245,7 +249,7 @@ const ChatItem = ({
             <Trash
               onClick={() =>
                 onOpen("deleteMessage", {
-                  apiUrl: `${apiUrl}/${id}`,
+                  apiUrl: `${socketUrl}/${id}`,
                   query: socketQuery,
                 })
               }

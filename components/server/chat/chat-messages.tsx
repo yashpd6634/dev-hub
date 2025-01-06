@@ -1,7 +1,7 @@
 "use client";
 
 import { Member, Message, User } from "@prisma/client";
-import React, { Fragment, useRef, ElementRef } from "react";
+import React, { Fragment, useRef, ElementRef, useEffect } from "react";
 import ChatWelcome from "./chat-welcome";
 import useChatQuery from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
@@ -9,6 +9,7 @@ import ChatItem from "./chat-item";
 import { format } from "date-fns";
 import useChatSocket from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { useSocket } from "@/components/providers/socket-provider";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -41,12 +42,27 @@ const ChatMessages = ({
   paramValue,
   type,
 }: ChatMessagesProps) => {
+  const { socket } = useSocket();
   const queryKey = `chat:${chatId}`;
-  const addKey = `chat:${chatId}:messages`;
-  const updateKey = `chat:${chatId}:messages:update`;
+  const addKey = `chat:${chatId}:message`;
+  const updateKey = `chat:${chatId}:message:update`;
 
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
+
+  useEffect(() => {
+    if (socket) {
+      // Emit the 'joinRoom' event when the component mounts
+      socket.emit("joinRoom", chatId);
+
+      // Listen for confirmation that the client joined the room
+      socket.on("joinedRoom", (message: string) => {
+        console.log(message); // Handle the confirmation message
+      });
+    }
+
+    return;
+  }, [socket, chatId]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -87,8 +103,6 @@ const ChatMessages = ({
     );
   }
 
-  console.log(socketUrl, "socketUrl");
-
   return (
     <div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
       {!hasNextPage && <div className="flex-1" />}
@@ -121,7 +135,6 @@ const ChatMessages = ({
                 isUpdated={message.updatedAt !== message.createdAt}
                 socketUrl={socketUrl}
                 socketQuery={socketQuery}
-                apiUrl={apiUrl}
               />
             ))}
           </Fragment>
