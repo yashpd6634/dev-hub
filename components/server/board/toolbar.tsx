@@ -3,7 +3,10 @@ import React from "react";
 import ToolButton from "./tool-button";
 import {
   Circle,
+  Hand,
+  Minus,
   MousePointer2,
+  MoveRight,
   Pencil,
   Redo2,
   Square,
@@ -33,6 +36,18 @@ const Toolbar = ({
   return (
     <div className="absolute z-10 top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
       <div className="bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-md">
+        <ToolButton
+          label="Hand (Panning tool)"
+          icon={Hand}
+          onClick={() => setCanvasState({ mode: CanvasMode.None })}
+          isActive={
+            canvasState.mode === CanvasMode.None ||
+            canvasState.mode === CanvasMode.Translating ||
+            canvasState.mode === CanvasMode.SelectingNet ||
+            canvasState.mode === CanvasMode.Pressing ||
+            canvasState.mode === CanvasMode.Resizing
+          }
+        />
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -99,6 +114,34 @@ const Toolbar = ({
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Ellipse
+          }
+        />
+        <ToolButton
+          label="Arrow"
+          icon={MoveRight}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Arrow,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Arrow
+          }
+        />
+        <ToolButton
+          label="Line"
+          icon={Minus}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Line,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Line
           }
         />
         <ToolButton

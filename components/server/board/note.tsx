@@ -47,10 +47,22 @@ const Note = ({ id, layer, onPointerDown, selectionColor }: NoteProps) => {
       height={height}
       onPointerDown={(e) => onPointerDown(e, id)}
       style={{
-        outline: selectionColor ? `1px solid ${selectionColor}` : "none",
+        outline: selectionColor
+          ? selectionColor
+          : fill
+          ? colorToCss(layer.fill)
+          : "transparent",
         backgroundColor: fill ? colorToCss(fill) : "#000",
       }}
-      className="shadow-md drop-shadow-xl"
+      className="shadow-md drop-shadow-xl hover:cursor-move"
+      strokeWidth={1}
+      stroke={
+        selectionColor
+          ? selectionColor
+          : fill
+          ? colorToCss(layer.fill)
+          : "transparent"
+      }
     >
       <ContentEditable
         html={value || "Text"}

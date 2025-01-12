@@ -115,8 +115,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             subject: user.id, // Set the subject as the user ID
           }
         );
-
-        console.log("next auth token", token);
       }
 
       return token;

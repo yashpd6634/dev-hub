@@ -15,7 +15,7 @@ type PathProps = {
 const Path = ({ x, y, points, fill, onPointerDown, stroke }: PathProps) => {
   return (
     <path
-      className="drop-shadow-md"
+      className="drop-shadow-md hover:cursor-move"
       onPointerDown={onPointerDown}
       d={getSvgPathFromStroke(
         getStroke(points, {

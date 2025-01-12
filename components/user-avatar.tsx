@@ -42,7 +42,7 @@ const UserAvatar = ({
         )}
       >
         <AvatarImage src={imageUrl} className="object-cover" />
-        <AvatarFallback>
+        <AvatarFallback className="bg-background text-neutral-300">
           {username[0]}
           {username[username.length - 1]}
         </AvatarFallback>

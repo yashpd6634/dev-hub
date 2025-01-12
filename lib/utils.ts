@@ -46,38 +46,81 @@ export function pointerEventToCanvasPoint(
   };
 }
 
-export function colorToCss(color: Color) {
+export function colorToCss(color: Color, alpha: number = 1) {
   return `#${color.r.toString(16).padStart(2, "0")}${color.g
     .toString(16)
-    .padStart(2, "0")}${color.b.toString(16).padStart(2, "0")}`;
+    .padStart(2, "0")}${color.b.toString(16).padStart(2, "0")}${Math.round(
+    alpha * 255
+  )
+    .toString(16)
+    .padStart(2, "0")}`;
 }
 
-export function resizeBounds(bounds: XYWH, corner: Side, point: Point): XYWH {
+export function resizeBounds(
+  bounds: XYWH,
+  corner: Side,
+  point: Point,
+  layerType?: LayerType
+): XYWH {
   const result = {
     x: bounds.x,
     y: bounds.y,
     width: bounds.width,
     height: bounds.height,
+    endX: bounds.x + bounds.width,
+    endY: bounds.y + bounds.height,
   };
 
   if ((corner & Side.Left) === Side.Left) {
-    result.x = Math.min(point.x, bounds.x + bounds.width);
-    result.width = Math.abs(bounds.x + bounds.width - point.x);
+    if (
+      layerType != undefined &&
+      (layerType === LayerType.Line || layerType === LayerType.Arrow)
+    ) {
+      result.width = bounds.x + bounds.width - point.x;
+    } else {
+      result.x = Math.min(point.x, bounds.x + bounds.width);
+      result.width = Math.abs(bounds.x + bounds.width - point.x);
+    }
+    result.endX = point.x;
   }
 
   if ((corner & Side.Right) === Side.Right) {
-    result.x = Math.min(point.x, bounds.x);
-    result.width = Math.abs(point.x - bounds.x);
+    if (
+      layerType != undefined &&
+      (layerType === LayerType.Line || layerType === LayerType.Arrow)
+    ) {
+      result.width = point.x - bounds.x;
+    } else {
+      result.x = Math.min(point.x, bounds.x);
+      result.width = Math.abs(point.x - bounds.x);
+    }
+    result.endX = point.x;
   }
 
   if ((corner & Side.Top) === Side.Top) {
-    result.y = Math.min(point.y, bounds.y + bounds.height);
-    result.height = Math.abs(bounds.y + bounds.height - point.y);
+    if (
+      layerType != undefined &&
+      (layerType === LayerType.Line || layerType === LayerType.Arrow)
+    ) {
+      result.height = bounds.y + bounds.height - point.y;
+    } else {
+      result.y = Math.min(point.y, bounds.y + bounds.height);
+      result.height = Math.abs(bounds.y + bounds.height - point.y);
+    }
+    result.endY = point.y;
   }
 
   if ((corner & Side.Bottom) === Side.Bottom) {
-    result.y = Math.min(point.y, bounds.y);
-    result.height = Math.abs(point.y - bounds.y);
+    if (
+      layerType != undefined &&
+      (layerType === LayerType.Line || layerType === LayerType.Arrow)
+    ) {
+      result.height = point.y - bounds.y;
+    } else {
+      result.y = Math.min(point.y, bounds.y);
+      result.height = Math.abs(point.y - bounds.y);
+    }
+    result.endY = point.y;
   }
 
   return result;

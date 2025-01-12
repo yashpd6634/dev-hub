@@ -28,7 +28,6 @@ export async function POST(request: Request) {
   });
 
   if (roomAvailable) {
-    console.log("available room: ", room);
     session.allow(room, session.FULL_ACCESS);
   }
 

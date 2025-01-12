@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -38,6 +38,14 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
   });
 
   const isLoading = form.formState.isSubmitting;
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isLoading]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -82,6 +90,7 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                       type === "conversation" ? name : "#" + name
                     }`}
                     {...field}
+                    ref={inputRef}
                   />
                   <div className="absolute top-7 right-8">
                     <EmojiPicker

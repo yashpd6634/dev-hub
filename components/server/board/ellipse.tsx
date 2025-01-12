@@ -17,7 +17,7 @@ const Ellipse = ({
 }: EllipseProps) => {
   return (
     <ellipse
-      className="drop-shadow-md"
+      className="drop-shadow-md hover:cursor-move"
       onPointerDown={(e) => onPointerDown(e, id)}
       style={{
         transform: `translate(${layer.x}px,${layer.y}px)`,
@@ -27,8 +27,14 @@ const Ellipse = ({
       rx={layer.width / 2}
       ry={layer.height / 2}
       fill={layer.fill ? colorToCss(layer.fill) : "#000"}
-      stroke={selectionColor || "transparent"}
       strokeWidth={1}
+      stroke={
+        selectionColor
+          ? selectionColor
+          : layer.fill
+          ? colorToCss(layer.fill)
+          : "transparent"
+      }
     />
   );
 };

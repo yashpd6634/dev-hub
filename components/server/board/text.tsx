@@ -1,4 +1,4 @@
-import { TextLayer } from "@/type";
+import { Side, TextLayer, XYWH } from "@/type";
 import { Kalam } from "next/font/google";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 import React from "react";
@@ -11,22 +11,29 @@ const font = Kalam({
 });
 
 const calaculateFontSize = (width: number, height: number) => {
-  const maxFontSize = 96;
+  const maxFontSize = 156;
+  const minFontSize = 8; // Minimum readable font size
   const scaleFactor = 0.5;
   const fontSizeBasedOnHeight = height * scaleFactor;
   const fontSizeBasedOnWidth = width * scaleFactor;
 
-  return Math.min(fontSizeBasedOnHeight, fontSizeBasedOnWidth, maxFontSize);
+  return Math.max(Math.min(fontSizeBasedOnHeight, maxFontSize), minFontSize);
 };
-
 type TextProps = {
   id: string;
   layer: TextLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
+  onResizeHandlePointerDown: (corner: Side, initialBounds: XYWH) => void;
   selectionColor?: string;
 };
 
-const Text = ({ id, layer, onPointerDown, selectionColor }: TextProps) => {
+const Text = ({
+  id,
+  layer,
+  onPointerDown,
+  selectionColor,
+  onResizeHandlePointerDown,
+}: TextProps) => {
   const { x, y, width, height, fill, value } = layer;
 
   const updateValue = useMutation(({ storage }, newValue) => {
@@ -46,8 +53,10 @@ const Text = ({ id, layer, onPointerDown, selectionColor }: TextProps) => {
       width={width}
       height={height}
       onPointerDown={(e) => onPointerDown(e, id)}
+      className="hover:cursor-move"
       style={{
         outline: selectionColor ? `1px solid ${selectionColor}` : "none",
+        overflow: "hidden",
       }}
     >
       <ContentEditable
@@ -60,6 +69,10 @@ const Text = ({ id, layer, onPointerDown, selectionColor }: TextProps) => {
         style={{
           fontSize: calaculateFontSize(width, height),
           color: fill ? colorToCss(fill) : "#000",
+          overflowWrap: "break-word",
+          wordBreak: "break-word",
+          whiteSpace: "normal",
+          overflow: "hidden",
         }}
       />
     </foreignObject>

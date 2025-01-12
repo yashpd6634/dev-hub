@@ -20,6 +20,7 @@ import {
   CanvasMode,
   CanvasState,
   Color,
+  Layer,
   LayerType,
   Point,
   Side,
@@ -68,6 +69,7 @@ const Canvas = ({ boardId }: CanvasProps) => {
     g: 0,
     b: 0,
   });
+  const [lastUsedAlpha, setLastUsedAlpha] = useState<number>(1);
   const [board, setBoard] = useState<ChannelWithServer | null | undefined>(
     null
   );
@@ -93,7 +95,9 @@ const Canvas = ({ boardId }: CanvasProps) => {
         | LayerType.Ellipse
         | LayerType.Note
         | LayerType.Rectangle
-        | LayerType.Text,
+        | LayerType.Text
+        | LayerType.Arrow
+        | LayerType.Line,
       position: Point
     ) => {
       const liveLayers = storage.get("layers");
@@ -103,22 +107,40 @@ const Canvas = ({ boardId }: CanvasProps) => {
 
       const livelayerIds = storage.get("layerIds");
       const layerId = nanoid();
-      const layer = new LiveObject({
-        type: layerType,
-        x: position.x,
-        y: position.y,
-        height: 100,
-        width: 100,
-        fill: lastUsedColor,
-      });
+      const layer = new LiveObject<Layer>(
+        layerType === LayerType.Line || layerType === LayerType.Arrow
+          ? {
+              type: layerType,
+              x: position.x,
+              y: position.y,
+              width: 2,
+              height: 2,
+              fill: lastUsedColor,
+              endX: position.x + 2,
+              endY: position.y + 2,
+            }
+          : {
+              type: layerType,
+              x: position.x,
+              y: position.y,
+              width: 2,
+              height: 2,
+              fill: lastUsedColor,
+            }
+      );
 
       livelayerIds.push(layerId);
       liveLayers.set(layerId, layer);
 
-      setMyPresence({ selection: [layerId] }, { addToHistory: true });
-      setCanvasState({ mode: CanvasMode.None });
+      setMyPresence({ selection: [layerId] });
+      onResizeHandlePointerDown(Side.Bottom + Side.Right, {
+        x: position.x,
+        y: position.y,
+        height: 2,
+        width: 2,
+      });
     },
-    [lastUsedColor]
+    [lastUsedColor, lastUsedAlpha]
   );
 
   const translateSelectedLayer = useMutation(
@@ -217,8 +239,6 @@ const Canvas = ({ boardId }: CanvasProps) => {
       const liveLayers = storage.get("layers");
       const { pencilDraft } = self.presence;
 
-      //   console.log(pencilDraft);
-
       if (
         pencilDraft == null ||
         pencilDraft.length < 2 ||
@@ -259,16 +279,23 @@ const Canvas = ({ boardId }: CanvasProps) => {
         return;
       }
 
-      const bounds = resizeBounds(
-        canvasState.initialBounds,
-        canvasState.corner,
-        point
-      );
-
       const liveLayers = storage.get("layers");
       const layer = liveLayers.get(self.presence.selection[0]);
 
       if (layer) {
+        // Extract layerId and layerType
+        const layerId = self.presence.selection[0];
+        const layerType = layer.get("type");
+
+        // Calculate new bounds
+        const bounds = resizeBounds(
+          canvasState.initialBounds,
+          canvasState.corner,
+          point,
+          layerType // Pass layerType for conditional logic
+        );
+
+        // Update the layer with new bounds
         layer.update(bounds);
       }
     },
@@ -334,6 +361,7 @@ const Canvas = ({ boardId }: CanvasProps) => {
       const point = pointerEventToCanvasPoint(e, camera);
 
       if (canvasState.mode === CanvasMode.Inserting) {
+        insertLayer(canvasState.layerType, point);
         return;
       }
 
@@ -362,7 +390,7 @@ const Canvas = ({ boardId }: CanvasProps) => {
       } else if (canvasState.mode === CanvasMode.Pencil) {
         insertPath();
       } else if (canvasState.mode === CanvasMode.Inserting) {
-        insertLayer(canvasState.layerType, point);
+        return;
       } else {
         setCanvasState({
           mode: CanvasMode.None,
@@ -460,7 +488,11 @@ const Canvas = ({ boardId }: CanvasProps) => {
         undo={history.undo}
         redo={history.redo}
       />
-      <SeletionTools camera={camera} setLastUsedColor={setLastUsedColor} />
+      <SeletionTools
+        camera={camera}
+        setLastUsedColor={setLastUsedColor}
+        setLastUsedAlpha={setLastUsedAlpha}
+      />
       <svg
         className="fixed top-0 left-0 h-screen w-screen overflow-hidden z-0"
         onWheel={onWheel}
@@ -479,6 +511,7 @@ const Canvas = ({ boardId }: CanvasProps) => {
               key={layerId}
               id={layerId}
               onLayerPointerDown={onLayerPointerDown}
+              onResizeHandlePointerDown={onResizeHandlePointerDown}
               selectionColor={layerIdsToColorSelection[layerId]}
             />
           ))}

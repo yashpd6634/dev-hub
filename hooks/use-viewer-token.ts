@@ -21,8 +21,6 @@ const useViewerToken = (hostIdentity: string) => {
         const name = decodeToken?.name;
         const identity = decodeToken.sub;
 
-        console.log(decodeToken);
-
         if (identity) {
           setIdentity(identity);
         }

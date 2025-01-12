@@ -32,7 +32,6 @@ export const resetIngresses = async (hostIdentity: string) => {
     roomName: hostIdentity,
   });
 
-  console.log(ingresses, "start ingresses");
 
   const rooms = await roomService.listRooms([hostIdentity]);
 
@@ -46,23 +45,17 @@ export const resetIngresses = async (hostIdentity: string) => {
     }
   }
 
-  console.log(ingresses, "end engresses");
 };
 
 export const createIngress = async (ingressType: IngressInput) => {
   const self = await getSelf();
-  console.log(self, "self");
   const selfStream = await getStreamByUserId(self.id);
-
-  console.log(selfStream, "selfStream");
 
   if (!selfStream) {
     throw new Error("Stream not found");
   }
 
   await resetIngresses(self.id);
-
-  console.log("reset Ingresses done!");
 
   const options: CreateIngressOptions = {
     name: self.username,
@@ -90,12 +83,7 @@ export const createIngress = async (ingressType: IngressInput) => {
     });
   }
 
-  console.log(options, "options");
-  console.log(ingressType, "ingressType");
-  console.log(ingressClient, "ingressClient");
-
   const ingress = await ingressClient.createIngress(ingressType, options);
-  console.log(ingress, "ingress");
 
   if (!ingress || !ingress.url || !ingress.streamKey) {
     throw new Error("Failed to create ingress");

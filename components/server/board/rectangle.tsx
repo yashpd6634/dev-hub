@@ -19,7 +19,7 @@ const Rectangle = ({
 
   return (
     <rect
-      className="drop-shadow-md"
+      className="drop-shadow-md hover:cursor-move"
       onPointerDown={(e) => onPointerDown(e, id)}
       style={{
         transform: `translate(${x}px, ${y}px)`,
@@ -29,8 +29,14 @@ const Rectangle = ({
       width={width}
       height={height}
       strokeWidth={1}
-      fill={fill ? colorToCss(fill) : "#000"}
-      stroke={selectionColor || "transparent"}
+      fill={fill ? colorToCss(fill, 0) : "#000"}
+      stroke={
+        selectionColor
+          ? selectionColor
+          : fill
+          ? colorToCss(layer.fill)
+          : "transparent"
+      }
     />
   );
 };

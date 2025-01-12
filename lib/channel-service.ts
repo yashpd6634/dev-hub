@@ -26,8 +26,6 @@ export const getChannelWithServer = async (channelId: string) => {
       },
     });
 
-    console.log("channel: ", channel);
-
     return channel;
   } catch (error) {
     console.log(error, "Channel is not found");

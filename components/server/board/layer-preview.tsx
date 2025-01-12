@@ -1,6 +1,6 @@
 "use client";
 
-import { LayerType } from "@/type";
+import { LayerType, Side, XYWH } from "@/type";
 import { useStorage } from "@liveblocks/react/suspense";
 import React, { memo } from "react";
 import Rectangle from "./rectangle";
@@ -9,15 +9,23 @@ import Text from "./text";
 import Note from "./note";
 import Path from "./path";
 import { colorToCss } from "@/lib/utils";
+import Arrow from "./arrow";
+import Line from "./line";
 
 type LayerPreviewProps = {
   id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
+  onResizeHandlePointerDown: (corner: Side, initialBounds: XYWH) => void;
   selectionColor?: string;
 };
 
 const LayerPreview = memo(
-  ({ id, onLayerPointerDown, selectionColor }: LayerPreviewProps) => {
+  ({
+    id,
+    onLayerPointerDown,
+    selectionColor,
+    onResizeHandlePointerDown,
+  }: LayerPreviewProps) => {
     const layer = useStorage((root) => root.layers.get(id));
 
     if (!layer) {
@@ -34,7 +42,13 @@ const LayerPreview = memo(
             x={layer.x}
             y={layer.y}
             fill={layer.fill ? colorToCss(layer.fill) : "#000"}
-            stroke={selectionColor}
+            stroke={
+              selectionColor
+                ? selectionColor
+                : layer.fill
+                ? colorToCss(layer.fill)
+                : "transparent"
+            }
           />
         );
       case LayerType.Note:
@@ -52,6 +66,7 @@ const LayerPreview = memo(
             id={id}
             layer={layer}
             onPointerDown={onLayerPointerDown}
+            onResizeHandlePointerDown={onResizeHandlePointerDown}
             selectionColor={selectionColor}
           />
         );
@@ -67,6 +82,24 @@ const LayerPreview = memo(
       case LayerType.Rectangle:
         return (
           <Rectangle
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
+      case LayerType.Arrow:
+        return (
+          <Arrow
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
+      case LayerType.Line:
+        return (
+          <Line
             id={id}
             layer={layer}
             onPointerDown={onLayerPointerDown}

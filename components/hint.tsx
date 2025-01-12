@@ -23,6 +23,7 @@ const Hint = ({ label, children, asChild, side, align }: HintProps) => {
           className="text-black bg-white"
           side={side}
           align={align}
+          style={{ whiteSpace: "pre-wrap" }}
         >
           <p className="font-semibold">{label}</p>
         </TooltipContent>

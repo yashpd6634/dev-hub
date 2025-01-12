@@ -3,21 +3,44 @@
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
 import { Camera, Color } from "@/type";
 import { useMutation, useSelf } from "@liveblocks/react/suspense";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import ColorPicker from "./color-picker";
 import { useDeleteLayers } from "@/hooks/use-delete-layers";
 import Hint from "@/components/hint";
 import { Button } from "@/components/ui/button";
-import { BringToFront, SendToBack, Trash2 } from "lucide-react";
+import {
+  PaintBucket,
+  Grid3x3,
+  BringToFront,
+  SendToBack,
+  Trash2,
+} from "lucide-react";
 
 type SelectionToolsProps = {
   camera: Camera;
   setLastUsedColor: (color: Color) => void;
+  setLastUsedAlpha: (alpha: number) => void;
 };
 
 const SelectionTools = memo(
-  ({ camera, setLastUsedColor }: SelectionToolsProps) => {
+  ({ camera, setLastUsedColor, setLastUsedAlpha }: SelectionToolsProps) => {
     const selection = useSelf((me) => me.presence.selection);
+
+    const deleteLayers = useDeleteLayers();
+
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Delete") {
+          deleteLayers();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown, { capture: true });
+
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown, { capture: true });
+      };
+    }, [deleteLayers]);
 
     const moveToBack = useMutation(
       ({ storage }) => {
@@ -76,8 +99,6 @@ const SelectionTools = memo(
       [selection, setLastUsedColor]
     );
 
-    const deleteLayers = useDeleteLayers();
-
     if (!selectionBounds) {
       return null;
     }
@@ -90,11 +111,23 @@ const SelectionTools = memo(
         className="absolute z-10 p-3 rounded-xl bg-white shadow-sm border flex select-none"
         style={{
           transform: `translate(
-                calc(${x}px - 215%),
+                calc(${x}px - 185%),
                 calc(${y}px - 230%)
             )`,
         }}
       >
+        <div className="flex flex-col gap-y-0.5 pr-2 mr-2 border-r border-neutral-200">
+          <Hint label="Solid">
+            <Button onClick={moveToFront} variant="board" size="icon">
+              <PaintBucket />
+            </Button>
+          </Hint>
+          <Hint label="Transparent" side="bottom">
+            <Button onClick={moveToBack} variant="board" size="icon">
+              <Grid3x3 />
+            </Button>
+          </Hint>
+        </div>
         <ColorPicker onChange={setFill} />
         <div className="flex flex-col gap-y-0.5">
           <Hint label="Bring to front">

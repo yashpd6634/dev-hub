@@ -41,8 +41,6 @@ const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
     );
   }
 
-  console.log("token: ", token);
-
   return (
     <LiveKitRoom
       data-lk-theme="default"
