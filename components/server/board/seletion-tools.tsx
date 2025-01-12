@@ -99,6 +99,18 @@ const SelectionTools = memo(
       [selection, setLastUsedColor]
     );
 
+    const setAlpha = useMutation(
+      ({ storage }, alpha: number) => {
+        const liveLayers = storage.get("layers");
+        setLastUsedAlpha(alpha);
+
+        selection.forEach((id) => {
+          liveLayers.get(id)?.set("alpha", alpha);
+        });
+      },
+      [selection, setLastUsedAlpha]
+    );
+
     if (!selectionBounds) {
       return null;
     }
@@ -118,12 +130,12 @@ const SelectionTools = memo(
       >
         <div className="flex flex-col gap-y-0.5 pr-2 mr-2 border-r border-neutral-200">
           <Hint label="Solid">
-            <Button onClick={moveToFront} variant="board" size="icon">
+            <Button onClick={() => setAlpha(1)} variant="board" size="icon">
               <PaintBucket />
             </Button>
           </Hint>
           <Hint label="Transparent" side="bottom">
-            <Button onClick={moveToBack} variant="board" size="icon">
+            <Button onClick={() => setAlpha(0)} variant="board" size="icon">
               <Grid3x3 />
             </Button>
           </Hint>

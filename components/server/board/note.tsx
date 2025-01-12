@@ -50,7 +50,7 @@ const Note = ({ id, layer, onPointerDown, selectionColor }: NoteProps) => {
         outline: selectionColor
           ? selectionColor
           : fill
-          ? colorToCss(layer.fill)
+          ? colorToCss(layer.fill, layer.alpha)
           : "transparent",
         backgroundColor: fill ? colorToCss(fill) : "#000",
       }}

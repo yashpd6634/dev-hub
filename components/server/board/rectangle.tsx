@@ -15,7 +15,7 @@ const Rectangle = ({
   onPointerDown,
   selectionColor,
 }: RectangleProps) => {
-  const { x, y, width, height, fill } = layer;
+  const { x, y, width, height, fill, alpha } = layer;
 
   return (
     <rect
@@ -29,7 +29,7 @@ const Rectangle = ({
       width={width}
       height={height}
       strokeWidth={1}
-      fill={fill ? colorToCss(fill, 0) : "#000"}
+      fill={fill ? colorToCss(fill, alpha) : "#000"}
       stroke={
         selectionColor
           ? selectionColor

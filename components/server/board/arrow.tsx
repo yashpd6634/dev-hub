@@ -43,6 +43,8 @@ const Arrow = ({
       />
       {/* Arrowhead */}
       <polygon
+        className="hover: cursor-move"
+        onPointerDown={(e) => onPointerDown(e, id)}
         points={`${endX},${endY} ${arrowX1},${arrowY1} ${arrowX2},${arrowY2}`}
         fill={selectionColor || colorToCss(fill || { r: 0, g: 0, b: 0 }, 1)}
       />

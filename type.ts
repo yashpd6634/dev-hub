@@ -66,6 +66,7 @@ export type PathLayer = {
   width: number;
   fill: Color;
   points: number[][];
+  alpha?: number;
   value?: string;
 };
 
@@ -78,6 +79,7 @@ export type ArrowLayer = {
   endX?: number;
   endY?: number;
   fill: Color;
+  alpha?: number;
   value?: string;
 };
 
@@ -90,6 +92,7 @@ export type LineLayer = {
   endX?: number;
   endY?: number;
   fill: Color;
+  alpha?: number;
   value?: string;
 };
 
@@ -100,6 +103,7 @@ export type TextLayer = {
   height: number;
   width: number;
   fill: Color;
+  alpha?: number;
   value?: string;
 };
 
