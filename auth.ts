@@ -88,7 +88,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       // If a user logs in (user object is present), add additional data
       if (user) {
-        token.username = user.name;
+        token.username = user.username;
         token.email = user.email;
         token.sub = user.id;
 
