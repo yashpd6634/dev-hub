@@ -35,8 +35,38 @@ A comprehensive developer community platform that combines Discord-like communic
 <img width="1920" height="439" alt="image" src="https://github.com/user-attachments/assets/ecb11874-c469-407c-9bea-b792b15fb60d" />
 <img width="1920" height="1035" alt="image" src="https://github.com/user-attachments/assets/9a24743f-55c6-44f0-9c78-659b494b4b8e" />
 
-## Login Page
+### Login Page
 <img width="1920" height="1014" alt="image" src="https://github.com/user-attachments/assets/0a5b4fb0-8221-47b8-a652-ab66e03f749a" />
+
+### Dashboard
+<img width="1916" height="1008" alt="image" src="https://github.com/user-attachments/assets/dc85aea3-6cba-4fb7-b62f-cebd7e0fdff6" />
+<img width="1918" height="1029" alt="image" src="https://github.com/user-attachments/assets/2246c35c-da7b-4e8d-91a9-8123aa11f96a" />
+
+### Home Page
+<img width="1915" height="1004" alt="image" src="https://github.com/user-attachments/assets/2b65314c-0aa8-4b11-8900-619a018e7a39" />
+
+### Search Result Page
+<img width="1920" height="774" alt="image" src="https://github.com/user-attachments/assets/33e9f4a2-1991-4023-aa3c-3305e44fe209" />
+
+### Add New Server Page
+<img width="719" height="635" alt="image" src="https://github.com/user-attachments/assets/80582ad4-a289-4401-82a4-524901ccd924" />
+
+### Chat Room
+<img width="1918" height="1031" alt="image" src="https://github.com/user-attachments/assets/36dbe558-7781-45f2-8edf-4091c5d5ffb7" />
+<img width="1920" height="1035" alt="image" src="https://github.com/user-attachments/assets/20cfd3a6-79b7-4d1a-b005-cdfc2346fa64" />
+<img width="1919" height="1036" alt="image" src="https://github.com/user-attachments/assets/33893566-98bb-4ef3-b950-f3a6982dea7f" />
+
+### Collabractive White Board
+<img width="1920" height="1028" alt="image" src="https://github.com/user-attachments/assets/19e9be7b-4cca-43b0-8eb7-0b8473ae45a3" />
+
+### Create New Channel
+<img width="859" height="434" alt="image" src="https://github.com/user-attachments/assets/e0333b71-ec85-4bf1-8e06-15b2af20d0db" />
+
+### Invite friends
+<img width="649" height="303" alt="image" src="https://github.com/user-attachments/assets/169922c0-3979-46cf-be16-f473816ef7cd" />
+
+### Search channel or member
+<img width="521" height="359" alt="image" src="https://github.com/user-attachments/assets/3eb3758e-5f90-4d7d-aef8-2cf35d9ed783" />
 
 
 ## 🛠️ Tech Stack
