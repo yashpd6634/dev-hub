@@ -29,6 +29,16 @@ A comprehensive developer community platform that combines Discord-like communic
 - **Email Verification** - Secure email verification for account registration
 - **Password Reset** - Secure password reset functionality
 
+## Screenshots
+
+### Public Pages
+<img width="1920" height="439" alt="image" src="https://github.com/user-attachments/assets/ecb11874-c469-407c-9bea-b792b15fb60d" />
+<img width="1920" height="1035" alt="image" src="https://github.com/user-attachments/assets/9a24743f-55c6-44f0-9c78-659b494b4b8e" />
+
+## Login Page
+<img width="1920" height="1014" alt="image" src="https://github.com/user-attachments/assets/0a5b4fb0-8221-47b8-a652-ab66e03f749a" />
+
+
 ## 🛠️ Tech Stack
 
 ### Frontend
